@@ -13,4 +13,8 @@ public class Customer {
         this.balance = balance;
         membershipPoint = new MembershipPoint(BigDecimal.ZERO);
     }
+
+    protected List<Reservation> getReservations() {
+        return reservations;
+    }
 }
