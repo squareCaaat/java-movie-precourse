@@ -23,6 +23,6 @@ public class Cinema {
     }
 
     public Boolean isOperating(LocalDateTime when) {
-        return OPEN_TIME.isAfter(when.toLocalTime()) && CLOSE_TIME.isBefore(when.toLocalTime());
+        return !OPEN_TIME.isBefore(when.toLocalTime()) && !CLOSE_TIME.isAfter(when.toLocalTime());
     }
 }
