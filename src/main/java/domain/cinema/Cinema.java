@@ -10,7 +10,7 @@ public class Cinema {
     private static final LocalTime CLOSE_TIME = LocalTime.of(23, 0);
     private static final int MAX_THEATER = 8;
 
-    private List<Theater> theaters = new ArrayList<>(MAX_THEATER);
+    private List<Theater> theaters = List.of(new Theater[MAX_THEATER]);
 
     private Cinema() {}
 
