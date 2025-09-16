@@ -25,4 +25,30 @@ public class Cinema {
     public Boolean isOperating(LocalDateTime when) {
         return !OPEN_TIME.isBefore(when.toLocalTime()) && !CLOSE_TIME.isAfter(when.toLocalTime());
     }
+
+    public Boolean canBeReserved(LocalDateTime when, Movie movie) {
+        for (Theater theater : theaters) {
+            return theater.hasValidScreen(when, movie);
+        }
+        return false;
+    }
+
+    public Theater getTheaterById(int theaterId) {
+        for (Theater theater : theaters) {
+            if (theater.getNumber() == theaterId) {
+                return theater;
+            }
+        }
+        return null;
+    }
+
+    public List<Theater> getAvailableTheaters(LocalDateTime when, Movie movie) {
+        List<Theater> availableTheaters = new ArrayList<>();
+        for (Theater theater : theaters) {
+            if (theater.isAvailable(when, movie)) {
+                availableTheaters.add(theater);
+            }
+        }
+        return availableTheaters;
+    }
 }
