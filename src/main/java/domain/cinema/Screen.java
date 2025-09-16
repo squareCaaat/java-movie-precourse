@@ -1,5 +1,6 @@
 package domain.cinema;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Screen {
@@ -58,8 +59,17 @@ public class Screen {
         return whenScreened;
     }
 
-    public Boolean isScreening(LocalDateTime when) {
-        checkIsScreening(when);
-        return isPlaying;
+    public LocalDateTime getEndTime() {
+        return movie.getEndTime(whenScreened);
+    }
+
+    public BigDecimal getPrice(char row,  int column) {
+        Seat targetSeat = seats[row % ROW_START][column];
+        return targetSeat.getPrice();
+    }
+
+    public Boolean reserveSeat(char row, int column) {
+        Seat targetSeat = seats[row % ROW_START][column];
+        return targetSeat.reserve();
     }
 }
