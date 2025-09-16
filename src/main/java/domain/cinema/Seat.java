@@ -27,15 +27,23 @@ public class Seat {
         return SeatClass.B_CLASS;
     }
 
+    protected BigDecimal getPrice() {
+        return seatClass.getPrice();
+    }
+
+    protected Boolean reserve() {
+        if (isReserved) {
+            return false;
+        }
+        isReserved = true;
+        return true;
+    }
+
     public String getLocation() {
         return String.valueOf(row) + column;
     }
 
     public Boolean isOccupied() {
         return isReserved;
-    }
-
-    public BigDecimal getPrice() {
-        return seatClass.getPrice();
     }
 }
