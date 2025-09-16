@@ -12,14 +12,6 @@ public class Screen {
     private final Seat[][] seats = new Seat[ROW_LIMIT][COLUMN_LIMIT];
 
     public Screen() {
-    private void checkIsScreening(LocalDateTime when) {
-        if (whenScreened == null || when == null || movie == null) {
-            return;
-        }
-
-        // 시작 시간 <= 비교 시간 <= 종료 시간
-        isPlaying = !when.isBefore(whenScreened)
-            && !when.isAfter(movie.getEndTime(whenScreened));
         for (int i = ROW_START; i <= 70; i++) {
             for(int j = 0; j < 10; j++) {
                 seats[i % ROW_START][j] = new Seat((char) i, j);
@@ -31,12 +23,35 @@ public class Screen {
         if (cinema.isOperating(when) && cinema.isOperating(movie.getEndTime(whenScreened))) {
             this.movie = movie;
             whenScreened = when;
-            checkIsScreening(when);
         }
     }
 
-    public Boolean isEmpty() {
-        return seats.stream().anyMatch(s -> !s.isOccupied());
+    protected Boolean hasEmptySeat() {
+        int i = ROW_START;
+        int j = 0;
+        while(i <= 70) {
+            if (j == 10) {
+                i++;
+                continue;
+            }
+            if (!seats[i % ROW_START][j].isOccupied()) {
+                return true;
+            }
+            j++;
+        }
+        return false;
+    }
+
+    public Boolean isScreening(LocalDateTime when) {
+        if (whenScreened == null || when == null || movie == null) {
+            return false;
+        }
+        return !when.isBefore(whenScreened)
+                && !when.isAfter(movie.getEndTime(whenScreened));
+    }
+
+    public Boolean willBeScreening(LocalDateTime when, Movie movie) {
+        return !isScreening(when) && whenScreened == when && this.movie == movie;
     }
 
     public LocalDateTime getStartTime() {
