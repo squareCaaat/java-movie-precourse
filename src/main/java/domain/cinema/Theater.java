@@ -8,21 +8,21 @@ public class Theater {
     private static int idCounter = 1;
 
     private final int id;
-    private List<Screen> screens = new ArrayList<>();
+    private final List<Screen> screens = new ArrayList<>();
 
     public Theater() {
         id = idCounter++;
     }
 
-    public Boolean hasValidScreen(LocalDateTime when, Movie movie) {
+    public Boolean hasValidScreen(LocalDateTime when, LocalDateTime startTime, Movie movie) {
         for (Screen screen : screens) {
-            return screen.willBeScreening(when, movie);
+            return screen.willBeScreening(when, startTime, movie);
         }
         return false;
     }
 
-    public Boolean isAvailable(LocalDateTime when, Movie movie) {
-        if(!hasValidScreen(when, movie)) {
+    public Boolean isAvailable(LocalDateTime when, LocalDateTime startTime, Movie movie) {
+        if(!hasValidScreen(when, startTime, movie)) {
             return false;
         }
         for (Screen screen : screens) {
@@ -31,9 +31,9 @@ public class Theater {
         return false;
     }
 
-    public Screen getScreen(LocalDateTime when, Movie movie) {
+    public Screen getScreen(LocalDateTime when, LocalDateTime startTime, Movie movie) {
         for (Screen screen : screens) {
-            if (screen.willBeScreening(when, movie)) {
+            if (screen.willBeScreening(when, startTime, movie)) {
                 return screen;
             }
         }
