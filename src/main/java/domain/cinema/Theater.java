@@ -31,7 +31,18 @@ public class Theater {
         return false;
     }
 
-    public Screen getScreen(LocalDateTime when, LocalDateTime startTime, Movie movie) {
+    public Screen getScreen(LocalDateTime startTime, Movie movie) {
+        for (Screen screen : screens) {
+            if (screen.hasEmptySeat()
+                && screen.getStartTime().isEqual(startTime)
+                && screen.getMovie().equals(movie)) {
+                return screen;
+            }
+        }
+        return null;
+    }
+
+    public Screen getScheduledScreen(LocalDateTime when, LocalDateTime startTime, Movie movie) {
         for (Screen screen : screens) {
             if (screen.willBeScreening(when, startTime, movie)) {
                 return screen;
