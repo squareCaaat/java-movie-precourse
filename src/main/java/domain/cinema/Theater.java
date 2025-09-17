@@ -14,7 +14,7 @@ public class Theater {
         id = idCounter++;
     }
 
-    public Boolean hasValidScreen(LocalDateTime when, LocalDateTime startTime, Movie movie) {
+    protected Boolean hasValidScreen(LocalDateTime when, LocalDateTime startTime, Movie movie) {
         for (Screen screen : screens) {
             return screen.willBeScreening(when, startTime, movie);
         }
