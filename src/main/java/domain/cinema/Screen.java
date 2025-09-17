@@ -13,11 +13,15 @@ public class Screen {
     private static final int COLUMN_LIMIT = 10;
     private static final int ROW_START = 65;
 
+    private static int sequenceCounter = 1;
+
+    private int sequence;
     private LocalDateTime whenScreened;
     private Movie movie;
     private final Seat[][] seats = new Seat[ROW_LIMIT][COLUMN_LIMIT];
 
     public Screen() {
+        sequence = sequenceCounter++;
         for (int i = ROW_START; i <= 70; i++) {
             for(int j = 0; j < 10; j++) {
                 seats[i % ROW_START][j] = new Seat((char) i, j);
