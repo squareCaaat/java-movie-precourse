@@ -44,9 +44,15 @@ public class Theater {
         return id;
     }
 
-    public void screenMovie(Cinema cinema, LocalDateTime when, Movie movie) {
+    public void screenMovie(Cinema cinema, LocalDateTime startTime, Movie movie) {
+        for (Screen screen : screens) {
+            if (!startTime.isBefore(screen.getStartTime())
+                && !startTime.isAfter(screen.getEndTime())) {
+                return;
+            }
+        }
         Screen screen = new Screen();
-        screen.playTheMovie(cinema, movie, when);
+        screen.playTheMovie(cinema, movie, startTime);
         screens.add(screen);
     }
 }
