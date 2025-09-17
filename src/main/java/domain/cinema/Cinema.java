@@ -10,9 +10,13 @@ public class Cinema {
     private static final LocalTime CLOSE_TIME = LocalTime.of(23, 0);
     private static final int MAX_THEATER = 8;
 
-    private List<Theater> theaters = List.of(new Theater[MAX_THEATER]);
+    private final Theater[] theaters = new Theater[MAX_THEATER];
 
-    private Cinema() {}
+    private Cinema() {
+        for (int i = 0; i < MAX_THEATER; i++) {
+            theaters[i] = new Theater();
+        }
+    }
 
     private static class SingletonHolder {
         private static final Cinema INSTANCE = new Cinema();
