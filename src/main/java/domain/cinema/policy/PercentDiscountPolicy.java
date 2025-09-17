@@ -3,6 +3,7 @@ package domain.cinema.policy;
 import domain.cinema.Screen;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,10 +15,11 @@ public class PercentDiscountPolicy implements DiscountPolicy{
         this.discountConditions = Arrays.asList(discountConditions);
     }
 
+    @Override
     public BigDecimal calculateDiscountedPrice(Screen screen, String seatLocation) {
         for (DiscountCondition discountCondition : discountConditions) {
             if (discountCondition.isSatisfiedBy(screen)) {
-                return screen.getCurrentPrice(seatLocation).multiply(BigDecimal.valueOf(0.1));
+                return screen.getCurrentPrice(seatLocation).multiply(BigDecimal.valueOf(0.1)).setScale(0, RoundingMode.FLOOR);
             }
         }
         return screen.getCurrentPrice(seatLocation);

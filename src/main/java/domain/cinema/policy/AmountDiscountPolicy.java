@@ -14,6 +14,7 @@ public class AmountDiscountPolicy implements DiscountPolicy {
         this.discountConditions = Arrays.asList(discountConditions);
     }
 
+    @Override
     public BigDecimal calculateDiscountedPrice(Screen screen, String seatLocation) {
         for (DiscountCondition discountCondition : discountConditions) {
             if (discountCondition.isSatisfiedBy(screen)) {
