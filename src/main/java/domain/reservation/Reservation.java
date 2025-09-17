@@ -15,6 +15,7 @@ public class Reservation {
     private Screen screen;
     private BigDecimal price;
     private LocalDateTime whenReservation;
+    private Boolean isConfirmed;
 
     public Reservation(int theaterId, Customer customer, Screen screen, BigDecimal price, LocalDateTime whenReservation) {
         this.theaterId = theaterId;
@@ -22,6 +23,7 @@ public class Reservation {
         this.screen = screen;
         this.price = price;
         this.whenReservation = whenReservation;
+        isConfirmed = false;
     }
 
     private Boolean validateReservation(Cinema cinema, LocalDateTime when, Movie movie, List<Reservation> reservations) {
@@ -78,5 +80,20 @@ public class Reservation {
             return null;
         }
         return cinema.getAvailableTheaters(when, movie);
+    }
+
+    public Reservation reserve(Customer customer, Cinema cinema, int theaterId, LocalDateTime when, Movie movie, String seatLocation) {
+        Theater targetTheater = getAvailableTheater(customer, cinema, theaterId, when, movie);
+        if (targetTheater == null) {
+            return null;
+        }
+
+        Screen screen = targetTheater.getScreen(when, movie);
+        if(screen == null || !screen.reserveSeat(seatLocation)) {
+            return null;
+
+        }
+
+        return new Reservation(theaterId, customer, screen, screen.calculateDiscountedPrice(seatLocation), LocalDateTime.now());
     }
 }
