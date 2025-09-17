@@ -7,11 +7,13 @@ public class Seat {
     private int column;
     private SeatClass seatClass;
     private Boolean isReserved;
+    private BigDecimal discountedPrice;
 
     public Seat(char row, int column) {
         this.row = row;
         this.column = column;
         seatClass = decideSeatClass(this.row);
+        discountedPrice = getRegularPrice();
         isReserved = false;
     }
 
@@ -27,8 +29,16 @@ public class Seat {
         return SeatClass.B_CLASS;
     }
 
-    protected BigDecimal getPrice() {
+    protected BigDecimal getRegularPrice() {
         return seatClass.getPrice();
+    }
+
+    protected BigDecimal getDiscountedPrice() {
+        return discountedPrice;
+    }
+
+    protected void reflectDiscount(BigDecimal discountedPrice) {
+        this.discountedPrice = discountedPrice;
     }
 
     protected Boolean reserve() {
@@ -40,7 +50,7 @@ public class Seat {
     }
 
     public String getLocation() {
-        return String.valueOf(row) + column;
+        return String.valueOf(row + column);
     }
 
     public Boolean isOccupied() {
