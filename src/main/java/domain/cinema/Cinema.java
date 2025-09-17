@@ -32,7 +32,7 @@ public class Cinema {
 
     public Boolean canBeReserved(LocalDateTime when, LocalDateTime startTime, Movie movie) {
         for (Theater theater : theaters) {
-            return theater.hasValidScreen(when, startTime, movie);
+            return theater.isAvailable(when, startTime, movie);
         }
         return false;
     }
