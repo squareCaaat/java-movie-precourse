@@ -27,12 +27,12 @@ public class Cinema {
     }
 
     public Boolean isOperating(LocalDateTime when) {
-        return !OPEN_TIME.isBefore(when.toLocalTime()) && !CLOSE_TIME.isAfter(when.toLocalTime());
+        return !OPEN_TIME.isAfter(when.toLocalTime()) && !CLOSE_TIME.isBefore(when.toLocalTime());
     }
 
-    public Boolean canBeReserved(LocalDateTime when, Movie movie) {
+    public Boolean canBeReserved(LocalDateTime when, LocalDateTime startTime, Movie movie) {
         for (Theater theater : theaters) {
-            return theater.hasValidScreen(when, movie);
+            return theater.hasValidScreen(when, startTime, movie);
         }
         return false;
     }
@@ -46,10 +46,10 @@ public class Cinema {
         return null;
     }
 
-    public List<Theater> getAvailableTheaters(LocalDateTime when, Movie movie) {
+    public List<Theater> getAvailableTheaters(LocalDateTime when, LocalDateTime startTime, Movie movie) {
         List<Theater> availableTheaters = new ArrayList<>();
         for (Theater theater : theaters) {
-            if (theater.isAvailable(when, movie)) {
+            if (theater.isAvailable(when, startTime, movie)) {
                 availableTheaters.add(theater);
             }
         }
