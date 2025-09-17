@@ -1,5 +1,10 @@
 package domain.cinema;
 
+import domain.cinema.policy.AmountDiscountPolicy;
+import domain.cinema.policy.MovieDayCondition;
+import domain.cinema.policy.MovieTimeCondition;
+import domain.cinema.policy.PercentDiscountPolicy;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -18,6 +23,13 @@ public class Screen {
                 seats[i % ROW_START][j] = new Seat((char) i, j);
             }
         }
+    }
+
+    private Seat parseSeat(String seatLocation) {
+        char row = seatLocation.charAt(0);
+        char column = seatLocation.charAt(1);
+        Seat targetSeat = seats[row % ROW_START][column];
+        return targetSeat;
     }
 
     protected void playTheMovie(Cinema cinema, Movie movie, LocalDateTime when) {
@@ -63,13 +75,25 @@ public class Screen {
         return movie.getEndTime(whenScreened);
     }
 
-    public BigDecimal getPrice(char row,  int column) {
-        Seat targetSeat = seats[row % ROW_START][column];
-        return targetSeat.getPrice();
+    public BigDecimal getCurrentPrice(String seatLocation) {
+        Seat targetSeat = parseSeat(seatLocation);
+        return targetSeat.getDiscountedPrice();
     }
 
-    public Boolean reserveSeat(char row, int column) {
-        Seat targetSeat = seats[row % ROW_START][column];
+    public Boolean reserveSeat(String seatLocation) {
+        Seat targetSeat = parseSeat(seatLocation);
         return targetSeat.reserve();
+    }
+
+    public BigDecimal calculateDiscountedPrice(String seatLocation) {
+        PercentDiscountPolicy percentDiscountPolicy = new PercentDiscountPolicy(new MovieDayCondition());
+
+        Seat targetSeat = parseSeat(seatLocation);
+        targetSeat.reflectDiscount(percentDiscountPolicy.calculateDiscountedPrice(this, seatLocation));
+
+        AmountDiscountPolicy amountDiscountPolicy = new AmountDiscountPolicy(new MovieTimeCondition());
+        targetSeat.reflectDiscount(amountDiscountPolicy.calculateDiscountedPrice(this, seatLocation));
+
+        return targetSeat.getDiscountedPrice();
     }
 }
