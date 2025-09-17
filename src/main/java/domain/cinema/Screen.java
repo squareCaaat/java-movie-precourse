@@ -37,7 +37,7 @@ public class Screen {
     }
 
     protected void playTheMovie(Cinema cinema, Movie movie, LocalDateTime when) {
-        if (cinema.isOperating(when) && cinema.isOperating(movie.getEndTime(whenScreened))) {
+        if (cinema.isOperating(when) && cinema.isOperating(movie.getEndTime(when))) {
             this.movie = movie;
             whenScreened = when;
         }
@@ -67,8 +67,8 @@ public class Screen {
                 && !when.isAfter(movie.getEndTime(whenScreened));
     }
 
-    public Boolean willBeScreening(LocalDateTime when, Movie movie) {
-        return !isScreening(when) && whenScreened == when && this.movie == movie;
+    public Boolean willBeScreening(LocalDateTime when, LocalDateTime startTime, Movie movie) {
+        return !isScreening(when) && whenScreened == startTime && this.movie == movie;
     }
 
     public LocalDateTime getStartTime() {
