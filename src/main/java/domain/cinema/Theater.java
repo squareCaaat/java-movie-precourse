@@ -43,4 +43,10 @@ public class Theater {
     public int getNumber() {
         return id;
     }
+
+    public void screenMovie(Cinema cinema, LocalDateTime when, Movie movie) {
+        Screen screen = new Screen();
+        screen.playTheMovie(cinema, movie, when);
+        screens.add(screen);
+    }
 }
