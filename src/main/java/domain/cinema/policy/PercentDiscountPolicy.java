@@ -19,7 +19,7 @@ public class PercentDiscountPolicy implements DiscountPolicy{
     public BigDecimal calculateDiscountedPrice(Screen screen, String seatLocation) {
         for (DiscountCondition discountCondition : discountConditions) {
             if (discountCondition.isSatisfiedBy(screen)) {
-                return screen.getCurrentPrice(seatLocation).multiply(BigDecimal.valueOf(0.1)).setScale(0, RoundingMode.FLOOR);
+                return screen.getCurrentPrice(seatLocation).multiply(BigDecimal.valueOf(0.9)).setScale(0, RoundingMode.FLOOR);
             }
         }
         return screen.getCurrentPrice(seatLocation);
