@@ -59,6 +59,10 @@ public class Screen {
         return false;
     }
 
+    protected Movie getMovie() {
+        return movie;
+    }
+
     public Boolean isScreening(LocalDateTime when) {
         if (whenScreened == null || when == null || movie == null) {
             return false;
@@ -90,9 +94,12 @@ public class Screen {
     }
 
     public BigDecimal calculateDiscountedPrice(String seatLocation) {
-        PercentDiscountPolicy percentDiscountPolicy = new PercentDiscountPolicy(new MovieDayCondition());
-
         Seat targetSeat = parseSeat(seatLocation);
+        if (!targetSeat.isOccupied()) {
+            return null;
+        }
+
+        PercentDiscountPolicy percentDiscountPolicy = new PercentDiscountPolicy(new MovieDayCondition());
         targetSeat.reflectDiscount(percentDiscountPolicy.calculateDiscountedPrice(this, seatLocation));
 
         AmountDiscountPolicy amountDiscountPolicy = new AmountDiscountPolicy(new MovieTimeCondition());
