@@ -24,14 +24,14 @@ public class Screen {
         sequence = sequenceCounter++;
         for (int i = ROW_START; i <= 70; i++) {
             for(int j = 0; j < 10; j++) {
-                seats[i % ROW_START][j] = new Seat((char) i, j);
+                seats[i % ROW_START][j] = new Seat((char) i, j + 1);
             }
         }
     }
 
     private Seat parseSeat(String seatLocation) {
         char row = seatLocation.charAt(0);
-        char column = seatLocation.charAt(1);
+        int column = Integer.parseInt(String.valueOf(seatLocation.charAt(1))) - 1;
         Seat targetSeat = seats[row % ROW_START][column];
         return targetSeat;
     }

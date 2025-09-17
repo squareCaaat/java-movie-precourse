@@ -50,7 +50,7 @@ public class Seat {
     }
 
     public String getLocation() {
-        return String.valueOf(row + column);
+        return String.valueOf(row).concat(String.valueOf(column));
     }
 
     public Boolean isOccupied() {
