@@ -17,4 +17,24 @@ public class Customer {
     protected List<Reservation> getReservations() {
         return reservations;
     }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public BigDecimal getPoints() {
+        return membershipPoint.getAmount();
+    }
+
+    public void earnPoint(BigDecimal points) {
+        membershipPoint.add(points);
+    }
+
+    public void deductPoint(BigDecimal points) {
+        membershipPoint.subtract(points);
+    }
+
+    public void withdraw(BigDecimal amount) {
+        balance = balance.subtract(amount);
+    }
 }

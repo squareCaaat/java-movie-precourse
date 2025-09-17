@@ -9,11 +9,15 @@ public class MembershipPoint {
         this.amount = amount;
     }
 
-    public void earnPoint(BigDecimal points) {
+    protected BigDecimal getAmount() {
+        return amount;
+    }
+
+    protected void add(BigDecimal points) {
         this.amount = this.amount.add(points);
     }
 
-    public void deductPoint(BigDecimal points) {
+    protected void subtract(BigDecimal points) {
         this.amount = this.amount.subtract(points);
     }
 }
