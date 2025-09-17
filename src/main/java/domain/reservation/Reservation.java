@@ -26,7 +26,7 @@ public class Reservation {
         isConfirmed = false;
     }
 
-    private Boolean validateReservation(Cinema cinema, LocalDateTime when, Movie movie, List<Reservation> reservations) {
+    private static Boolean validateReservation(Cinema cinema, LocalDateTime when, LocalDateTime startTime, Movie movie, List<Reservation> reservations) {
         for (Reservation reservation : reservations) {
             if (!reservation.getScreen().getStartTime().isAfter(when)
                     && !reservation.getScreen().getEndTime().isBefore(when)) {
@@ -34,15 +34,15 @@ public class Reservation {
             }
 
             if (reservation.getScreen()
-                    == cinema.getTheaterById(reservation.getTheaterId()).getScreen(when, movie)) {
+                    == cinema.getTheaterById(reservation.getTheaterId()).getScheduledScreen(when, startTime, movie)) {
                 return true;
             }
         }
         return false;
     }
 
-    private Theater getAvailableTheater(Customer customer, Cinema cinema, int theaterId, LocalDateTime when, Movie movie) {
-        List<Theater> availableTheaters = findReservableTheaters(customer, cinema, when, movie);
+    private static Theater getAvailableTheater(Customer customer, Cinema cinema, int theaterId, LocalDateTime when, LocalDateTime startTime, Movie movie) {
+        List<Theater> availableTheaters = findReservableTheaters(customer, cinema, when, startTime, movie);
         if (availableTheaters == null ||  availableTheaters.isEmpty()) {
             return null;
         }
@@ -63,32 +63,32 @@ public class Reservation {
         return theaterId;
     }
 
-    protected Boolean hasDuplicatedReservation(Customer customer, Cinema cinema, LocalDateTime when, Movie movie) {
+    protected static Boolean hasDuplicatedReservation(Customer customer, Cinema cinema, LocalDateTime when, LocalDateTime startTime, Movie movie) {
         List<Reservation> reservations = customer.getReservations();
         if (reservations == null || reservations.isEmpty()) {
             return false;
         }
-        return validateReservation(cinema, when, movie, reservations);
+        return validateReservation(cinema, when, startTime, movie, reservations);
     }
 
-    protected List<Theater> findReservableTheaters(Customer customer, Cinema cinema, LocalDateTime when, Movie movie) {
-        if (!cinema.canBeReserved(when, movie)) {
+    protected static List<Theater> findReservableTheaters(Customer customer, Cinema cinema, LocalDateTime when, LocalDateTime startTime, Movie movie) {
+        if (!cinema.canBeReserved(LocalDateTime.now(), startTime, movie)) {
             return null;
         }
 
-        if (hasDuplicatedReservation(customer, cinema, when, movie)) {
+        if (hasDuplicatedReservation(customer, cinema, when, startTime, movie)) {
             return null;
         }
-        return cinema.getAvailableTheaters(when, movie);
+        return cinema.getAvailableTheaters(when, startTime, movie);
     }
 
-    public Reservation reserve(Customer customer, Cinema cinema, int theaterId, LocalDateTime when, Movie movie, String seatLocation) {
-        Theater targetTheater = getAvailableTheater(customer, cinema, theaterId, when, movie);
+    public static Reservation reserve(Customer customer, Cinema cinema, int theaterId, LocalDateTime when, LocalDateTime startTime, Movie movie, String seatLocation) {
+        Theater targetTheater = getAvailableTheater(customer, cinema, theaterId, when, startTime, movie);
         if (targetTheater == null) {
             return null;
         }
 
-        Screen screen = targetTheater.getScreen(when, movie);
+        Screen screen = targetTheater.getScheduledScreen(when, startTime, movie);
         if(screen == null || !screen.reserveSeat(seatLocation)) {
             return null;
 
