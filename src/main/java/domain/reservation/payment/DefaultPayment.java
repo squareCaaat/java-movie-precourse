@@ -9,8 +9,9 @@ public abstract class DefaultPayment implements PaymentMethod {
 
     @Override
     public Boolean pay(Customer customer, BigDecimal pointAmount, BigDecimal paymentAmount) {
-        if(pointAmount.equals(BigDecimal.ZERO)
-                && customer.getBalance().compareTo(paymentAmount) >= 0) {
+        if((pointAmount.equals(BigDecimal.ZERO)
+            || customer.getPoints().equals(BigDecimal.ZERO))
+            && customer.getBalance().compareTo(paymentAmount) >= 0) {
             customer.withdraw(paymentAmount);
             return true;
         }
