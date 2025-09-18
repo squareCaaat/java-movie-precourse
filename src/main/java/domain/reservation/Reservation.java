@@ -4,6 +4,7 @@ import domain.cinema.Cinema;
 import domain.cinema.Movie;
 import domain.cinema.Screen;
 import domain.cinema.Theater;
+import domain.reservation.payment.PaymentMethod;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,14 +16,16 @@ public class Reservation {
     private Screen screen;
     private BigDecimal price;
     private LocalDateTime whenReservation;
+    private String seatLocation;
     private Boolean isConfirmed;
 
-    public Reservation(int theaterId, Customer customer, Screen screen, BigDecimal price, LocalDateTime whenReservation) {
+    public Reservation(int theaterId, Customer customer, Screen screen, BigDecimal price, LocalDateTime whenReservation, String seatLocation) {
         this.theaterId = theaterId;
         this.customer = customer;
         this.screen = screen;
         this.price = price;
         this.whenReservation = whenReservation;
+        this.seatLocation = seatLocation;
         isConfirmed = false;
     }
 
@@ -72,7 +75,7 @@ public class Reservation {
     }
 
     protected static List<Theater> findReservableTheaters(Customer customer, Cinema cinema, LocalDateTime when, LocalDateTime startTime, Movie movie) {
-        if (!cinema.canBeReserved(LocalDateTime.now(), startTime, movie)) {
+        if (!cinema.canBeReserved(when, startTime, movie)) {
             return null;
         }
 
@@ -94,6 +97,13 @@ public class Reservation {
 
         }
 
-        return new Reservation(theaterId, customer, screen, screen.calculateDiscountedPrice(seatLocation), LocalDateTime.now());
+        return new Reservation(theaterId, customer, screen, screen.calculateDiscountedPrice(seatLocation), LocalDateTime.now(), seatLocation);
+    }
+
+    public Boolean confirmReservation(Customer customer, PaymentMethod paymentMethod, BigDecimal pointAmount) {
+        if(customer.pay(paymentMethod, pointAmount, price)) {
+            isConfirmed = true;
+        }
+        return isConfirmed;
     }
 }
