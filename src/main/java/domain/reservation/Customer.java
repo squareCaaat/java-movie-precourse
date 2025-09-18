@@ -1,5 +1,7 @@
 package domain.reservation;
 
+import domain.reservation.payment.PaymentMethod;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,7 @@ public class Customer {
         membershipPoint = new MembershipPoint(BigDecimal.ZERO);
     }
 
-    protected List<Reservation> getReservations() {
+    public List<Reservation> getReservations() {
         return reservations;
     }
 
@@ -36,5 +38,9 @@ public class Customer {
 
     public void withdraw(BigDecimal amount) {
         balance = balance.subtract(amount);
+    }
+
+    public Boolean pay(PaymentMethod paymentMethod, BigDecimal pointAmount, BigDecimal paymentAmount) {
+        return paymentMethod.pay(this, pointAmount, paymentAmount);
     }
 }
