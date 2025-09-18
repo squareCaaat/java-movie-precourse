@@ -10,11 +10,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ReservationTest {
 
@@ -32,7 +28,7 @@ class ReservationTest {
         // When
         Reservation reservation = Reservation.reserve(customer, cinema, 1, LocalDateTime.of(2025,9,17,13,0), startTime, movie, "D1");
         // Then
-        assertNotNull(reservation);
+        assertThat(reservation).isNotNull();
     }
 
     @Test
@@ -51,9 +47,9 @@ class ReservationTest {
         Reservation reservation2 = Reservation.reserve(customer, cinema, 1, LocalDateTime.of(2025,9,17,13,0), startTime, new Movie("mmm", Duration.ofHours(2)), "D1");
         Reservation reservation3 = Reservation.reserve(customer, cinema, 1, LocalDateTime.of(2025,9,17,13,0), LocalDateTime.of(2025,12,12,12,0), movie, "D1");
         // Then
-        assertNull(reservation);
-        assertNull(reservation2);
-        assertNull(reservation3);
+        assertThat(reservation).isNull();
+        assertThat(reservation2).isNull();
+        assertThat(reservation3).isNull();
     }
 
     @Test
@@ -71,7 +67,7 @@ class ReservationTest {
         Reservation exisitingReservation = Reservation.reserve(customer, cinema, 1, LocalDateTime.of(2025,9,15,11,0), startTime, movie, "D1");
         Reservation reservation = Reservation.reserve(customer, cinema, 1, LocalDateTime.of(2025,9,15,11,0), startTime, movie, "D1");
         // Then
-        assertNull(reservation);
+        assertThat(reservation).isNull();
     }
 
     @Test
@@ -93,7 +89,7 @@ class ReservationTest {
         // When
         Reservation reservation = Reservation.reserve(customer, cinema, 1, LocalDateTime.of(2025,9,16,11,0), startTime, movie, "D1");
         // Then
-        assertNull(reservation);
+        assertThat(reservation).isNull();
     }
 
     @Test
@@ -111,9 +107,9 @@ class ReservationTest {
         // When
         Boolean confirmReservation = reservation.confirmReservation(customer, new CardPayment(), BigDecimal.valueOf(5000));
         // Then
-        assertTrue(confirmReservation);
-        assertEquals(BigDecimal.valueOf(9550), customer.getBalance());
-        assertEquals(BigDecimal.ZERO, customer.getPoints());
+        assertThat(confirmReservation).isTrue();
+        assertThat(customer.getBalance()).isEqualByComparingTo("9550");
+        assertThat(customer.getPoints()).isZero();
     }
 
     @Test
@@ -131,9 +127,9 @@ class ReservationTest {
         // When
         Boolean confirmReservation = reservation.confirmReservation(customer, new CashPayment(), BigDecimal.valueOf(5000));
         // Then
-        assertTrue(confirmReservation);
-        assertEquals(BigDecimal.valueOf(9220), customer.getBalance());
-        assertEquals(BigDecimal.ZERO, customer.getPoints());
+        assertThat(confirmReservation).isTrue();
+        assertThat(customer.getBalance()).isEqualByComparingTo("9220");
+        assertThat(customer.getPoints()).isZero();
     }
 
     @Test
@@ -150,9 +146,9 @@ class ReservationTest {
         // When
         Boolean confirmReservation = reservation.confirmReservation(customer, new CardPayment(), BigDecimal.valueOf(5000));
         // Then
-        assertTrue(confirmReservation);
-        assertEquals(BigDecimal.valueOf(2000), customer.getBalance());
-        assertEquals(BigDecimal.ZERO, customer.getPoints());
+        assertThat(confirmReservation).isTrue();
+        assertThat(customer.getBalance()).isEqualByComparingTo("2000");
+        assertThat(customer.getPoints()).isZero();
 
     }
 
@@ -170,6 +166,6 @@ class ReservationTest {
         // When
         Boolean confirmReservation = reservation.confirmReservation(customer, new CardPayment(), BigDecimal.ZERO);
         // Then
-        assertFalse(confirmReservation);
+        assertThat(confirmReservation).isFalse();
     }
 }

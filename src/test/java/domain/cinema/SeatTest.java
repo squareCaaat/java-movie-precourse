@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class SeatTest {
 
@@ -17,7 +16,7 @@ class SeatTest {
         // When
         String seatLocation = seat.getLocation();
         // Then
-        assertEquals("A1", seatLocation);
+        assertThat(seatLocation).isEqualTo("A1");
     }
 
     @Test
@@ -32,6 +31,6 @@ class SeatTest {
         // When
         Boolean isOccupied = screen.reserveSeat("A1");
         // Then
-        assertTrue(isOccupied);
+        assertThat(isOccupied).isTrue();
     }
 }

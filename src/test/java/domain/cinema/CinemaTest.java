@@ -8,11 +8,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CinemaTest {
     @Test
@@ -23,8 +19,8 @@ class CinemaTest {
         // When
         Cinema cinema2 = Cinema.getInstance();
         // Then
-        assertNotNull(cinema);
-        assertEquals(cinema, cinema2);
+        assertThat(cinema).isNotNull();
+        assertThat(cinema2).isEqualTo(cinema);
     }
 
     @Test
@@ -36,7 +32,7 @@ class CinemaTest {
         LocalDateTime when = LocalDateTime.of(2025, 9, 17, 11, 0);
         Boolean isOperating = cinema.isOperating(when);
         // Then
-        assertTrue(isOperating);
+        assertThat(isOperating).isTrue();
     }
 
     @Test
@@ -50,8 +46,8 @@ class CinemaTest {
         Boolean isOperating1 = cinema.isOperating(when1);
         Boolean isOperating2 = cinema.isOperating(when2);
         // Then
-        assertFalse(isOperating1);
-        assertFalse(isOperating2);
+        assertThat(isOperating1).isFalse();
+        assertThat(isOperating2).isFalse();
     }
 
     @Test
@@ -65,7 +61,7 @@ class CinemaTest {
         theater.screenMovie(cinema, startTime, movie);
         Boolean canBeReserved = cinema.canBeReserved(LocalDateTime.of(2025,9,17,12,0),startTime, movie);
         // When
-        assertTrue(canBeReserved);
+        assertThat(canBeReserved).isTrue();
     }
 
     @Test
@@ -80,7 +76,7 @@ class CinemaTest {
         // When
         Boolean canBeReserved = cinema.canBeReserved(LocalDateTime.of(2025,10,11,11,0),LocalDateTime.of(2025,10,11,12,0), movie);
         // Then
-        assertFalse(canBeReserved);
+        assertThat(canBeReserved).isFalse();
     }
 
     @Test
@@ -92,8 +88,8 @@ class CinemaTest {
         // When
         Theater theaterAex = cinema.getTheaterById(1);
         // Then
-        assertEquals(theaterA, theaterAex);
-        assertNotEquals(theaterAex, theaterB);
+        assertThat(theaterAex).isEqualTo(theaterA);
+        assertThat(theaterAex).isNotEqualTo(theaterB);
     }
 
     @Test
@@ -112,9 +108,10 @@ class CinemaTest {
         // When
         List<Theater> theaters = cinema.getAvailableTheaters(LocalDateTime.of(2025,9,17,10,0), startTime, movie);
         // Then
-        assertNotNull(theaters);
-        assertFalse(theaters.isEmpty());
-        assertTrue(theaters.contains(theater1));
-        assertFalse(theaters.contains(theater2));
+        assertThat(theaters)
+            .isNotNull()
+            .isNotEmpty()
+            .contains(theater1)
+            .doesNotContain(theater2);
     }
 }

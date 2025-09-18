@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class TheaterTest {
 
@@ -22,7 +20,7 @@ class TheaterTest {
         // When
         Boolean isAvailable = theater.isAvailable(LocalDateTime.of(2025,9,17,11,0), startTime, movie);
         // Then
-        assertTrue(isAvailable);
+        assertThat(isAvailable).isTrue();
     }
 
     @Test
@@ -36,7 +34,7 @@ class TheaterTest {
         // when
         Screen screen = theater.getScheduledScreen(LocalDateTime.of(2025,9,17,11,0), startTime, movie);
         // Then
-        assertNotNull(screen);
+        assertThat(screen).isNotNull();
     }
 
     @Test
@@ -47,6 +45,6 @@ class TheaterTest {
         // When
         int id = theater.getNumber();
         // Then
-        assertEquals(1, id);
+        assertThat(id).isEqualTo(1);
     }
 }

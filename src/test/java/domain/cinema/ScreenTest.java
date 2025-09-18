@@ -7,9 +7,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ScreenTest {
 
@@ -26,7 +24,7 @@ class ScreenTest {
         // When
         Boolean isScreening = screen.isScreening(LocalDateTime.of(2025,9,17,13,30));
         // Then
-        assertTrue(isScreening);
+        assertThat(isScreening).isTrue();
     }
 
     @Test
@@ -42,7 +40,7 @@ class ScreenTest {
         // When
         Boolean isScreening = screen.isScreening(LocalDateTime.of(2025,9,17,20,0));
         // Then
-        assertFalse(isScreening);
+        assertThat(isScreening).isFalse();
     }
 
     @Test
@@ -58,7 +56,7 @@ class ScreenTest {
         // When
         Boolean willBeScreening = screen.willBeScreening(LocalDateTime.of(2025,9,17,12,0), startTime, movie);
         // Then
-        assertTrue(willBeScreening);
+        assertThat(willBeScreening).isTrue();
     }
 
     @Test
@@ -73,7 +71,7 @@ class ScreenTest {
         // When
         LocalDateTime startTimeExpected = screen.getStartTime();
         // Then
-        assertEquals(startTimeExpected, startTime);
+        assertThat(startTimeExpected).isEqualTo(startTime);
     }
 
     @Test
@@ -88,7 +86,7 @@ class ScreenTest {
         // When
         LocalDateTime endTime = screen.getEndTime();
         // Then
-        assertEquals(endTime, LocalDateTime.of(2025,9,17,15,0));
+        assertThat(endTime).isEqualTo(LocalDateTime.of(2025,9,17,15,0));
     }
 
     @Test
@@ -106,9 +104,9 @@ class ScreenTest {
         BigDecimal currentPriceA = screen.getCurrentPrice("E1");
         BigDecimal currentPriceB = screen.getCurrentPrice("A1");
         // Then
-        assertEquals(currentPriceS, BigDecimal.valueOf(18000));
-        assertEquals(currentPriceA, BigDecimal.valueOf(15000));
-        assertEquals(currentPriceB, BigDecimal.valueOf(12000));
+        assertThat(currentPriceS).isEqualByComparingTo("18000");
+        assertThat(currentPriceA).isEqualByComparingTo("15000");
+        assertThat(currentPriceB).isEqualByComparingTo("12000");
     }
 
     @Test
@@ -124,7 +122,7 @@ class ScreenTest {
         // When
         Boolean reserveSeat = screen.reserveSeat("D1");
         // Then
-        assertTrue(reserveSeat);
+        assertThat(reserveSeat).isTrue();
     }
 
     @Test
@@ -141,7 +139,7 @@ class ScreenTest {
         // When
         Boolean reserveSeat = screen.reserveSeat("D1");
         // Then
-        assertFalse(reserveSeat);
+        assertThat(reserveSeat).isFalse();
     }
 
     @Test
@@ -158,7 +156,7 @@ class ScreenTest {
         // When
         BigDecimal discountedPrice = screen.calculateDiscountedPrice("D1");
         // Then
-        assertEquals(discountedPrice, BigDecimal.valueOf(14200));
+        assertThat(discountedPrice).isEqualByComparingTo("14200");
     }
 
     @Test
@@ -175,7 +173,7 @@ class ScreenTest {
         // When
         BigDecimal discountedPrice = screen.calculateDiscountedPrice("D1");
         // Then
-        assertEquals(discountedPrice, BigDecimal.valueOf(16200));
+        assertThat(discountedPrice).isEqualByComparingTo("16200");
     }
 
     @Test
@@ -192,7 +190,7 @@ class ScreenTest {
         // When
         BigDecimal discountedPrice = screen.calculateDiscountedPrice("D1");
         // Then
-        assertEquals(discountedPrice, BigDecimal.valueOf(16000));
+        assertThat(discountedPrice).isEqualByComparingTo("16000");
     }
 
     @Test
@@ -209,6 +207,6 @@ class ScreenTest {
         // When
         BigDecimal discountedPrice = screen.calculateDiscountedPrice("D1");
         // Then
-        assertEquals(discountedPrice, BigDecimal.valueOf(18000));
+        assertThat(discountedPrice).isEqualByComparingTo("18000");
     }
 }

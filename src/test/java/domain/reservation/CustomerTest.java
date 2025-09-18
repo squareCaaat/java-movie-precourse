@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CustomerTest {
     @Test
@@ -15,7 +15,7 @@ class CustomerTest {
         // When
         BigDecimal balance = customer.getBalance();
         // Then
-        assertEquals(BigDecimal.valueOf(100000), balance);
+        assertThat(balance).isEqualByComparingTo("100000");
     }
 
     @Test
@@ -25,7 +25,7 @@ class CustomerTest {
         // When
         BigDecimal points = customer.getPoints();
         // Then
-        assertEquals(BigDecimal.ZERO, points);
+        assertThat(points).isZero();
     }
 
     @Test
@@ -35,7 +35,7 @@ class CustomerTest {
         // When
         customer.earnPoint(BigDecimal.valueOf(1000));
         // Then
-        assertEquals(BigDecimal.valueOf(1000), customer.getPoints());
+        assertThat(customer.getPoints()).isEqualByComparingTo("1000");
     }
 
     @Test
@@ -46,7 +46,7 @@ class CustomerTest {
         customer.earnPoint(BigDecimal.valueOf(10000));
         customer.deductPoint(BigDecimal.valueOf(5000));
         // Then
-        assertEquals(BigDecimal.valueOf(5000), customer.getPoints());
+        assertThat(customer.getPoints()).isEqualByComparingTo("5000");
     }
 
     @Test
@@ -56,7 +56,7 @@ class CustomerTest {
         // When
         customer.withdraw(BigDecimal.valueOf(10000));
         // Then
-        assertEquals(BigDecimal.valueOf(90000), customer.getBalance());
+        assertThat(customer.getBalance()).isEqualByComparingTo("90000");
     }
 
     @Test
@@ -66,6 +66,6 @@ class CustomerTest {
         // When
         customer.pay(new CardPayment(), BigDecimal.ZERO, BigDecimal.valueOf(50000));
         // Then
-        assertEquals(BigDecimal.valueOf(50000), customer.getBalance());
+        assertThat(customer.getBalance()).isEqualByComparingTo("50000");
     }
 }
