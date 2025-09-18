@@ -16,7 +16,9 @@ public class Theater {
 
     protected Boolean hasValidScreen(LocalDateTime when, LocalDateTime startTime, Movie movie) {
         for (Screen screen : screens) {
-            return screen.willBeScreening(when, startTime, movie);
+            if (screen.willBeScreening(when, startTime, movie)) {
+                return true;
+            }
         }
         return false;
     }
