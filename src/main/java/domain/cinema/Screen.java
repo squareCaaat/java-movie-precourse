@@ -32,8 +32,7 @@ public class Screen {
     private Seat parseSeat(String seatLocation) {
         char row = seatLocation.charAt(0);
         int column = Integer.parseInt(String.valueOf(seatLocation.charAt(1))) - 1;
-        Seat targetSeat = seats[row % ROW_START][column];
-        return targetSeat;
+        return seats[row % ROW_START][column];
     }
 
     protected void playTheMovie(Cinema cinema, Movie movie, LocalDateTime when) {
@@ -72,7 +71,10 @@ public class Screen {
     }
 
     public Boolean willBeScreening(LocalDateTime when, LocalDateTime startTime, Movie movie) {
-        return !isScreening(when) && whenScreened == startTime && this.movie == movie;
+        return !isScreening(when)
+            && when.isBefore(whenScreened)
+            && whenScreened == startTime
+            && this.movie == movie;
     }
 
     public LocalDateTime getStartTime() {
